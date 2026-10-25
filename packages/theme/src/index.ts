@@ -91,3 +91,12 @@ export const nativeRendering: RenderingCapabilities = {
   insetShadows: false,
   customMaterials: false,
 };
+
+export { resolveSurfaceRecipe, surfacePresets, surfaceFillBands } from './surface';
+export type {
+  SurfaceOptions,
+  SurfacePreset,
+  SurfaceState,
+  SurfaceRecipe,
+  SurfaceShadow,
+} from './surface';

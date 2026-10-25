@@ -43,6 +43,7 @@ export function Foundations() {
         <nav className="sidebar" aria-label="Foundations">
           <p>Documentation</p>
           <a href="#main">Overview</a>
+          <a href="/surface-lab">Surface Lab</a>
           <a href="#architecture">Architecture</a>
           <a href="#tokens">Design tokens</a>
           <a href="#themes">Themes</a>

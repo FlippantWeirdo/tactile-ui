@@ -11,3 +11,11 @@
 | Separate docs and showcase               | Exercise platform adapters in their real bundlers                           | No React Native Web dependency or universal UI aliasing                             |
 | No component catalog in Phase 1          | Stabilize dependency direction and tooling first                            | No Button, Input, Card, or primitive control exports yet                            |
 | Manual Changesets release                | Final identity and ownership remain undecided                               | No unattended npm publication                                                       |
+
+## Phase 2 decisions
+
+- Keep the deterministic surface recipe in the existing pure theme package; both adapters consume it without adding a fifth package or renderer dependency.
+- Fix polished/porcelain material colors to the supplied reference in both appearances. Theme mode governs the surrounding UI; named radius still supports theme customization.
+- Make state visual and explicit. Surface is a div/View container; interaction semantics and production Button remain deferred.
+- Use CSS continuous gradients/inset shadows on web; use 24 clipped solid native fill strips, solid rim layers and platform depth on native. The baseline capability descriptor stays honest about missing native inset blur.
+- Preserve Phase 1 routes, theme APIs, tests and release boundaries. Add labs and package-consumer tests without publishing or versioning packages.

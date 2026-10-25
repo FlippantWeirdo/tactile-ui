@@ -66,3 +66,9 @@ Vitest covers contract behavior, built-in contrast, custom theme isolation, scop
 CI installs from a frozen lockfile, checks formatting, runs `pnpm check`, validates Expo's dependency matrix, and runs browser checks. Xcode/Gradle binary builds, native accessibility checks, Dynamic Type, device gestures, and a bare-host smoke test remain distinct checks.
 
 Changesets uses independent versions with dependency patch updates. A changeset records the initial foundation. Versioning and publishing are explicit maintainer actions; CI never publishes. Scope ownership, license, package metadata, and registry access must be settled before release.
+
+## Phase 2: surface engine
+
+`@tactile-ui/theme` now owns the framework-free `resolveSurfaceRecipe`, `SurfaceOptions`, `SurfaceRecipe`, `surfacePresets` and deterministic native fill-band helper. This extends the existing dependency graph without introducing a new package or dependency. Rendering decisions remain separate: DOM `Surface`/`surfaceToCSS` use CSS, and native `Surface`/`surfaceToNativeStyles` use View layers, iOS shadows and Android elevation. Both require the nearest theme provider. No native capabilities were upgraded: solid edge layers approximate inset shading and do not constitute inset-shadow support.
+
+Materials retain the supplied reference colors across theme modes; named radii resolve from the theme. Surface is a visual container with explicit state and no built-in interaction, semantic control role or animation. Phase 1 adapters/providers remain intact. The Next.js lab lives at `/surface-lab`, and the Expo lab joins the foundation screen. See [surface contract, calibration and limitations](SURFACES.md).

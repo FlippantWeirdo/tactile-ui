@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { SurfaceLab } from './SurfaceLab';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -101,6 +102,7 @@ function Showcase({
             <Text style={{ color: preview.colors.onAccent }}>Accent / {preview.colors.accent}</Text>
           </View>
         </View>
+        <SurfaceLab />
         <Text accessibilityRole="header" style={[themed.text, styles.heading]}>
           Semantic colors
         </Text>

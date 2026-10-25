@@ -16,3 +16,6 @@ work/
 outputs/
 apps/showcase/ios/
 apps/showcase/android/
+
+# Local visual evidence; not package or source assets.
+.impeccable/review/

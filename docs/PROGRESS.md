@@ -1,4 +1,6 @@
-# Phase 1 progress
+# Implementation progress
+
+## Phase 1
 
 ## Scope delivered
 
@@ -44,3 +46,33 @@ No component catalog, reusable Button/Card/Input APIs, gestures, animation runti
 ## Native validation boundary
 
 Metro exports verify iOS/Android JavaScript bundle generation, not native binary compilation or runtime rendering. A bare React Native host, native accessibility, large font scales, appearance, safe areas, and platform shadow quality require native integration/device validation before claiming support. Simulator and Android service probes were unavailable in the sandbox; no native screenshot evidence is claimed.
+
+## Phase 2 · Surface engine and visual calibration
+
+Implemented on `feat/surface-engine`, preserving the Phase 1 foundation. Added a pure deterministic recipe resolver in `@tactile-ui/theme`, public non-interactive Surface containers in both platform adapters, polished/porcelain reference materials, Next.js `/surface-lab`, and an Expo Surface Lab within the existing showcase. Added resolver/adapter/browser/packed-consumer coverage and a pending minor Changeset for theme and both adapters. No production Button or advanced renderer was implemented; package versions and publication remain untouched.
+
+Verified on 25 October 2026 with Node 24.21.0, pnpm 10.34.8, and installed Google Chrome.
+
+| Check                                           | Exact result                                                                                                                                                                                              |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm check`                                    | Passed (exit 0): lint, typecheck, unit tests, production builds and packed packages                                                                                                                       |
+| ESLint                                          | Passed; zero warnings                                                                                                                                                                                     |
+| TypeScript                                      | All six libraries/apps, tooling and test sources passed; native public declarations retain external RN types                                                                                              |
+| Vitest                                          | 31/31 passed in seven files: tokens 2, theme 14, React DOM 9, native adapter 6; includes all 17 Phase 1 tests                                                                                             |
+| Libraries                                       | Four ESM/CJS/declaration/source-map builds passed                                                                                                                                                         |
+| Next.js                                         | Production build passed; `/`, `/_not-found`, `/surface-lab` prerendered                                                                                                                                   |
+| Expo export                                     | iOS and Android Hermes JS bundles and reference asset exported successfully                                                                                                                               |
+| Packed consumers                                | Four archives passed export/declaration/README/dependency checks; packed resolver + Surface SSR passed in ESM and CommonJS                                                                                |
+| `PLAYWRIGHT_CHANNEL=chrome pnpm test:browser`   | 4/4 passed across desktop/mobile Chrome: original foundation and Surface Lab controls, keyboard skip link, slider keyboard input, reference loading, themes, reset, no page errors or horizontal overflow |
+| `pnpm format:check`                             | Passed                                                                                                                                                                                                    |
+| `pnpm --filter @tactile-ui/showcase run doctor` | Passed; dependencies are up to date                                                                                                                                                                       |
+| Visual evidence                                 | Inspected 1440px desktop and 390px mobile, light/dark, and 916px original/reconstruction frames; no clipping/overflow in the captured layouts                                                             |
+| Reference integrity                             | Original and docs public copy have identical SHA-256 `bec08c02bc10dfc96214304be2dcad196fb17f91e57fe48db1df9143d2eb41df`                                                                                   |
+| Changesets                                      | `pnpm changeset status` passed; pending release plan only, no version/publish run                                                                                                                         |
+| Native device validation                        | Not performed: no booted iOS simulator and no attached Android device. Exports are not native binary or runtime validation                                                                                |
+
+Browser tests now use a fresh production server on port 3100 (`PLAYWRIGHT_PORT` overrides it) with server reuse disabled. This avoids stale Phase 1 servers or unrelated apps on port 3000. The initial stale-server run was invalid evidence; the final isolated run passed all four tests.
+
+The static web design detector reported one font advisory for Arial in the reference reconstruction. That lab-only fallback is deliberate because the source font is unknown; the surrounding docs retain Newsreader and system text. The detector has no native visual verdict. See [Surface API and calibration](SURFACES.md) for detailed fidelity limits: glyph weight/width, medallion color field, bevel/antialiasing/shadow falloff, and native 24-band fills/solid rims/iOS versus Android shadows. No numeric pixel-match score or pixel-identical/native parity claim is made. Native accessibility, large font scaling, real device rendering, binary builds and a bare-host integration remain unverified.
+
+The independent web finish review identified two material fixes: fit controls plus specimen in the mobile first viewport, and expose the radius endpoint as “Pill” to assistive technology. Both were scored resolved in the reviewer’s final `ship` verdict pass. This is approval of those two web fixes, not a native visual verdict. The final 390×844 captures place the live specimen at y=652.83 with height=66.58 (bottom=719.41); tests assert the first viewport from document top, spoken radius values, and atomic reference/reconstruction frame alignment. The documentation review found the APIs and evidence consistent with the implementation, with no blocking gap. Historical Phase 1 wording in PRODUCT.md was reported as pre-existing context drift and preserved.

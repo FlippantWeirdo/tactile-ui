@@ -98,9 +98,9 @@ try {
   for (const format of ['esm', 'cjs']) {
     const source =
       format === 'esm'
-        ? `import { createTheme } from '@tactile-ui/theme'; import { TactileProvider } from '@tactile-ui/react'; import { createElement } from 'react'; import { renderToString } from 'react-dom/server';`
-        : `const { createTheme } = require('@tactile-ui/theme'); const { TactileProvider } = require('@tactile-ui/react'); const { createElement } = require('react'); const { renderToString } = require('react-dom/server');`;
-    const check = `const theme = createTheme({mode:'dark'}); const html = renderToString(createElement(TactileProvider, {theme}, 'packed consumer')); if (!html.includes('data-tactile-theme="dark"') || !html.includes('packed consumer')) process.exit(1);`;
+        ? `import { createTheme, resolveSurfaceRecipe } from '@tactile-ui/theme'; import { TactileProvider, Surface } from '@tactile-ui/react'; import { createElement } from 'react'; import { renderToString } from 'react-dom/server';`
+        : `const { createTheme, resolveSurfaceRecipe } = require('@tactile-ui/theme'); const { TactileProvider, Surface } = require('@tactile-ui/react'); const { createElement } = require('react'); const { renderToString } = require('react-dom/server');`;
+    const check = `const theme = createTheme({mode:'dark'}); const html = renderToString(createElement(TactileProvider, {theme}, createElement(Surface, {preset:'porcelain'}, 'packed consumer'))); if (resolveSurfaceRecipe(theme).preset !== 'polished' || !html.includes('data-tactile-surface="porcelain"') || !html.includes('data-tactile-theme="dark"') || !html.includes('packed consumer')) process.exit(1);`;
     run(
       process.execPath,
       [...(format === 'esm' ? ['--input-type=module'] : []), '-e', source + check],
