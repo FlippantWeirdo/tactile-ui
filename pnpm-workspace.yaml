@@ -1,0 +1,11 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Explicit dependencies and Expo's standard monorepo resolution; no hoisting hacks.
+nodeLinker: isolated
+strictPeerDependencies: true
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver
