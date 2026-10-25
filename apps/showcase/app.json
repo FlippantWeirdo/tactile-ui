@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Tactile UI Showcase",
+    "slug": "tactile-ui-showcase",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "dev.tactileui.showcase"
+    }
+  }
+}
