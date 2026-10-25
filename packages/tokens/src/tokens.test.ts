@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { tokens } from './index';
+import { tokens, buttonSizes } from './index';
 describe('platform-neutral token contract', () => {
   it('keeps dimensions numeric, with a shared accessible touch target', () => {
     for (const dimension of [...Object.values(tokens.space), ...Object.values(tokens.radius)])
@@ -7,6 +7,16 @@ describe('platform-neutral token contract', () => {
     expect(tokens.accessibility.minTouchTarget).toBeGreaterThanOrEqual(48);
     const spaces = Object.values(tokens.space);
     expect(spaces).toEqual([...spaces].sort((a, b) => a - b));
+  });
+  it('keeps Button target sizes accessible and spacing/icon/type scales ordered', () => {
+    const sizes = Object.values(buttonSizes);
+    for (const size of sizes)
+      expect(size.minHeight).toBeGreaterThanOrEqual(tokens.accessibility.minTouchTarget);
+    for (const key of ['minHeight', 'paddingX', 'icon', 'fontSize'] as const) {
+      expect(sizes.map((size) => size[key])).toEqual(
+        [...sizes.map((size) => size[key])].sort((a, b) => a - b),
+      );
+    }
   });
   it('keeps depth independent from CSS and native styles', () => {
     expect(tokens.depth.raised.offsetY).toBeGreaterThan(0);

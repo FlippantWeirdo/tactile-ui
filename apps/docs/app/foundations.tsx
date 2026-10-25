@@ -44,6 +44,7 @@ export function Foundations() {
           <p>Documentation</p>
           <a href="#main">Overview</a>
           <a href="/surface-lab">Surface Lab</a>
+          <a href="/button-lab">Button Lab</a>
           <a href="#architecture">Architecture</a>
           <a href="#tokens">Design tokens</a>
           <a href="#themes">Themes</a>

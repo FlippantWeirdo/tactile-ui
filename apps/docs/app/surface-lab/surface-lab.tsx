@@ -68,6 +68,7 @@ export function SurfaceLab() {
           <a href="/surface-lab" aria-current="page">
             Surface Lab
           </a>
+          <a href="/button-lab">Buttons</a>
         </nav>
         <button
           className="theme-switch"

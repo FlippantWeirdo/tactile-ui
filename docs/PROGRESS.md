@@ -102,3 +102,41 @@ Validation used Node 24.21.0 and pnpm 10.34.8. The default pnpm 11.25.0 failed t
 Final `pnpm format:check` and `git diff --check` both passed (exit 0).
 
 Implementation and web review are ready for user approval. Phase 3 has not begun and must wait for refined-surface approval. Native views still approximate continuous gradients/inset shadows; Android OS elevation differs from iOS/web. Native phone/tablet screenshots, font scaling, screen readers, binary builds, and an external bare-host test remain outstanding. No further engine architecture is required to start Button composition after approval.
+
+## Phase 3 · Production Button
+
+The Phase 3 brief approved the refined Phase 2.1 surfaces. Confirmed that baseline was committed as `0d2c4ce` on a clean `feat/surface-engine`, then created `feat/button-component` from it. Phase 3 changes are local to that new branch. No package versions were changed; no publishing, pushing, or merging was performed. Phase 4 has not begun.
+
+Implemented exported DOM/native Button components, shared three-size tokens, both interactive Labs, an optional reference-style trailing accent, and full API guidance in [BUTTONS.md](BUTTONS.md). Both controls compose the public Surface; no changes to the approved resolver or either Surface renderer. Web ships an explicit `styles.css` export. Native uses built-in Animated and AccessibilityInfo, with no new dependencies. Geometry, semantics, loading/disabled behavior, focus, icons, and reduced motion belong to Button.
+
+### Verification · 25 October 2026
+
+Node 24.21.0 and pnpm 10.34.8. A temporary local command shim selected the cached pinned pnpm for nested scripts; default system pnpm 11.25.0 is incompatible with the repository engine range. No toolchain/lockfile changes were made.
+
+| Check                  | Exact final result                                                                                                                                                                                    |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm check`           | Exit 0: lint, types, unit tests, all builds, packed consumers                                                                                                                                         |
+| ESLint                 | Passed with zero warnings                                                                                                                                                                             |
+| TypeScript             | All six packages/apps plus tooling/test sources passed                                                                                                                                                |
+| Vitest                 | **61/61 passed in 9 files**: tokens 3, theme 16, DOM 23, native 19; includes all 35 Phase 2.1 tests                                                                                                   |
+| Library builds         | All four ESM/CJS/declaration/source-map builds passed; DOM CSS artifact emitted and exported                                                                                                          |
+| Next.js production     | Passed; `/`, `/_not-found`, `/surface-lab`, `/button-lab` prerendered                                                                                                                                 |
+| Expo export            | iOS and Android Hermes bundles exported successfully; about 1.6MB each; canonical reference asset included                                                                                            |
+| Packed consumers       | All four archives passed export/type/README/dependency checks; stylesheet exists; Button + Surface SSR validated in ESM and CJS; native public declarations retain external RN types                  |
+| Browser                | **8/8 Chrome tests passed in 13.2s**, desktop/mobile: foundation, Surface Lab, Button interactions and reduced motion                                                                                 |
+| Expo dependency matrix | Passed; dependencies up to date                                                                                                                                                                       |
+| Changesets             | Status passed; pending minor release plan only                                                                                                                                                        |
+| Visual evidence        | Desktop 1440 × 1000 and mobile 390 × 844 light/dark, tablet 768 × 1024 light; both variants/sizes, focused/pressed/loading, 916 × 166 reference-style composition                                     |
+| Loading geometry       | Live md button with trailing icon retained 146.34375px width and approximately 56px host height before/after loading                                                                                  |
+| Design detector        | Two Arial advisories in the original and new reference-only compositions; retained for canonical calibration                                                                                          |
+| Native runtime         | iPhone 18 Pro simulator booted successfully for host check, but no Expo Go host was installed; restored to shutdown. No connected Android device. No native screenshots or runtime acceptance claimed |
+
+Browser checks cover click/Enter/Space activation, pointer cancellation and drag-out cancellation, native form submit/reset, visible theme-driven focus outline, variant/size/icon controls, stable loading bounds and names, blocked loading/disabled activation, full width, long-label wrapping, themes, static reduced-motion loading, and preserved foundation accent behavior. Mocked native tests cover roles and disabled/busy state, callbacks/ref/style forwarding, decoration separation, reduced-motion changes/cleanup/stale-query ordering, and built-in native-driver translation. Actual screen-reader announcements, native touch geometry, large text and animation require native runtime validation.
+
+Final `pnpm format:check`, `pnpm check:packages` after the README updates, and `git diff --check` all passed (exit 0).
+
+The independent Impeccable finish review returned **ship for the reviewed web finish** with no implementation defects. Its evidence request for a padded focus capture was addressed. The documentation pass reconciled package/root READMEs and architecture/decisions while preserving the existing design shell. Historical PRODUCT.md/DESIGN.md context drift and Phase 1 root metadata remain unchanged; route-specific Button metadata is present.
+
+[Web evidence and reference composition](phase-3/EVIDENCE.md) · [Button API](BUTTONS.md)
+
+Native material limitations remain 24 fill bands, solid inset approximations, iOS shadow mapping and OS-controlled Android elevation. The optional native accent uses eight solid bands. No native visual parity, VoiceOver/TalkBack, binary build, hardware performance, or bare React Native host result is claimed. Keep those checks separate from the successful Expo exports. Further components remain out of scope.

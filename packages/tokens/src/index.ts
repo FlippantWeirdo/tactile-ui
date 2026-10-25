@@ -37,3 +37,29 @@ export type Tokens = typeof tokens;
 export type SpaceToken = keyof Tokens['space'];
 export type RadiusToken = keyof Tokens['radius'];
 export type DepthToken = keyof Tokens['depth'];
+
+/** Button layout tokens. Material rendering remains owned by Surface recipes. */
+export const buttonSizes = {
+  sm: {
+    minHeight: tokens.accessibility.minTouchTarget,
+    paddingX: tokens.space[4],
+    gap: tokens.space[2],
+    icon: tokens.space[4],
+    fontSize: tokens.typography.size.label,
+  },
+  md: {
+    minHeight: tokens.space[12] + tokens.space[2],
+    paddingX: tokens.space[6],
+    gap: tokens.space[2],
+    icon: tokens.space[5],
+    fontSize: tokens.typography.size.body,
+  },
+  lg: {
+    minHeight: tokens.space[16],
+    paddingX: tokens.space[8],
+    gap: tokens.space[3],
+    icon: tokens.space[6],
+    fontSize: tokens.typography.size.title,
+  },
+} as const;
+export type ButtonSize = keyof typeof buttonSizes;

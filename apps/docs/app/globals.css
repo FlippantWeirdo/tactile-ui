@@ -731,3 +731,154 @@ footer span {
     padding: 1.5rem 1rem;
   }
 }
+
+/* Button Lab inherits the existing reference-manual shell. */
+.button-lab-shell input:not([type='checkbox']) {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 0.4rem;
+  padding: 0.5rem;
+  border: 1px solid var(--tactile-color-border);
+  border-radius: 6px;
+  background: var(--tactile-color-surface);
+  color: var(--tactile-color-text);
+  font: inherit;
+}
+.button-toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.button-toggles label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  min-height: 44px;
+}
+.button-toggles input {
+  width: 18px;
+  height: 18px;
+}
+.button-preview-space {
+  width: 100%;
+  padding: 3rem 0;
+  text-align: center;
+}
+.button-size-studies {
+  display: grid;
+  gap: 2.5rem;
+  padding: 2.5rem;
+  background: var(--tactile-color-surface);
+}
+.button-size-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+}
+.button-example-grid {
+  display: grid;
+  gap: 2rem;
+}
+.button-example-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}
+.button-save-demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.button-save-demo p {
+  margin: 0;
+}
+.button-wide-demo {
+  margin-top: 2rem;
+  max-width: 600px;
+}
+.button-reference-scroll {
+  overflow-x: auto;
+  background: #fff;
+  color: #18191b;
+  border-radius: 8px;
+}
+.button-reference-composition {
+  width: 916px;
+  height: 166px;
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+  padding: 34px 0 0 48px;
+  background: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.button-reference-composition .reference-resume-button {
+  min-height: 97px !important;
+  width: 433px !important;
+  padding: 8px 16px 8px 30px !important;
+  font-size: 38px !important;
+  letter-spacing: -1.28px;
+  font-weight: 400 !important;
+}
+.button-reference-composition .reference-about-button {
+  min-height: 95px !important;
+  width: 299px !important;
+  padding: 8px 24px !important;
+  font-size: 38px !important;
+  letter-spacing: -1.28px;
+  font-weight: 400 !important;
+}
+.button-reference-composition .tactile-button-content {
+  gap: 16px !important;
+  white-space: nowrap;
+}
+.button-warm-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  color: #1d1b18;
+  background: linear-gradient(170deg, #ffdf71 0%, #ffca4e 50%, #ffb655 75%, #ec79a5 100%);
+  box-shadow: inset 0 1.4px 3.2px #ffe695;
+}
+.button-warm-accent svg {
+  width: 36px;
+  height: 36px;
+}
+.button-form-demo {
+  max-width: 600px;
+}
+.button-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+@media (max-width: 700px) {
+  .button-material-stage {
+    min-height: 230px;
+  }
+  .button-workbench .button-toggles {
+    grid-column: 1 / -1;
+  }
+  .button-preview-space {
+    padding: 2rem 0;
+  }
+  .button-size-studies {
+    padding: 1.5rem;
+  }
+  .button-size-row {
+    gap: 1.25rem;
+  }
+  .button-lab-shell .lab-nav {
+    gap: 0.7rem;
+  }
+}

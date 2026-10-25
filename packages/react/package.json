@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "React DOM theme foundation for Tactile UI.",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
     "dist",
     "README.md"
@@ -21,7 +23,8 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
-    }
+    },
+    "./styles.css": "./dist/index.css"
   },
   "publishConfig": {
     "access": "public"

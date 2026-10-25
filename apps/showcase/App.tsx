@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { SurfaceLab } from './SurfaceLab';
+import { ButtonLab } from './ButtonLab';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -56,8 +57,8 @@ function Showcase({
         </Text>
         <Text style={[themed.textMuted, styles.subtitle]}>Native foundations</Text>
         <Text style={[themed.text, styles.body]}>
-          Shared tokens and themes, rendered with native views. This showcase contains no catalog
-          components yet.
+          Shared tokens and themes, rendered with native views. Explore the Surface Engine and the
+          first interactive Button component.
         </Text>
         <View style={[styles.rule, { backgroundColor: theme.colors.border }]} />
         <Text accessibilityRole="header" style={[themed.text, styles.heading]}>
@@ -103,6 +104,7 @@ function Showcase({
           </View>
         </View>
         <SurfaceLab />
+        <ButtonLab />
         <Text accessibilityRole="header" style={[themed.text, styles.heading]}>
           Semantic colors
         </Text>

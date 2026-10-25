@@ -2,7 +2,7 @@
 
 ## Contract
 
-Expo-first with bare React Native compatibility as a goal. Native views are the baseline; advanced rendering is optional and isolated. npm packages are the first distribution format. Phase 1 contains infrastructure, tokens, themes, adapters, and app shells, without a component catalog.
+Expo-first with bare React Native compatibility as a goal. Native views are the baseline; advanced rendering is optional and isolated. npm packages are the first distribution format. Phase 1 established infrastructure, tokens, themes, adapters, and app shells. Phase 2 added Surface; Phase 3 adds Button as the first interactive component.
 
 ## Dependency direction
 
@@ -29,11 +29,11 @@ The web provider owns a scoped div with CSS variables and `color-scheme`. The na
 
 Web system appearance is subscribed to after mount; `initialMode` produces deterministic SSR and hydration, defaulting to light. A system-dark user can see a brief light frame on first load unless an app supplies an appropriate server-known initial mode. We avoid an undocumented blocking script or hydration suppression. Theme persistence is app policy, not a base-package side effect. Native follows `useColorScheme`, with light fallback when unavailable.
 
-Motion tokens include an instant duration. Future animated components must respect reduced motion; no animation runtime or animated controls ship in Phase 1.
+Motion tokens include an instant duration. Phase 3 Button uses the shared quick duration/easing with CSS transitions on web and React Native Animated on native. Both respect reduced motion; no third-party animation runtime is required.
 
 ## Platform rendering
 
-Web will use semantic HTML and CSS. Native will use React Native View, Text, Pressable, accessibility properties, native shadow/elevation, and platform conventions. No native component module, config plugin, linking step, or Expo runtime is required by the native library itself.
+Web uses semantic HTML and CSS. Native uses React Native View, Text, Pressable, accessibility properties, native shadow/elevation, and platform conventions. No native component module, config plugin, linking step, or Expo runtime is required by the native library itself.
 
 The style adapter maps shared blur to `shadowRadius = blur / 2`, with independent Android elevation. This is an approximation, not pixel-identical rendering. Native inset shadows and custom materials are explicitly unsupported by the baseline capability contract.
 
@@ -41,11 +41,11 @@ The style adapter maps shared blur to `shadowRadius = blur / 2`, with independen
 
 `RenderingCapabilities` and `nativeRendering` describe the baseline without loading an engine. A future `@tactile-ui/renderer-skia` (or similar) must be a separate package. It may depend on shared tokens/themes and declare its own engine peers. Neither base adapter may import or re-export that package. Consumers must opt in explicitly; semantic controls and interaction stay owned by platform views. Unsupported effects must fall back to native views rather than require a rendering engine. No speculative renderer implementation or dependency is included now.
 
-Haptics and gesture/animation adapters will follow the same explicit opt-in model; Expo-specific code belongs in an Expo adapter, not in the native base.
+Future haptics and third-party gesture/animation adapters will follow the same explicit opt-in model; Expo-specific code belongs in an Expo adapter, not in the native base.
 
 ## Package and build strategy
 
-Four publishable packages use tsup to emit ESM (`.js`), CommonJS (`.cjs`), declarations (`.d.ts`/`.d.cts`), and source maps. Dependencies and platform peers remain external. Export maps and the native condition resolve to built files, not workspace-only source paths. React adapters preserve a client boundary for Next.js. The pure theme/token packages remain usable by server code.
+Four publishable packages use tsup to emit ESM (`.js`), CommonJS (`.cjs`), declarations (`.d.ts`/`.d.cts`), and source maps. Dependencies and platform peers remain external. Export maps and the native condition resolve to built files, not workspace-only source paths. React adapters preserve a client boundary for Next.js. The pure theme/token packages remain usable by server code. The DOM package explicitly exports `@tactile-ui/react/styles.css` from its built CSS artifact and marks CSS as a side effect. Button consumers import it once; Surface-only usage remains stylesheet-free.
 
 `workspace:^` links packages locally and becomes a semver dependency in packed archives. Publishable file lists include only dist and README. The package check actually packs and unpacks archives, inspects entrypoints and dependency boundaries, and imports the packed token module in both ESM and CommonJS.
 
@@ -61,7 +61,7 @@ Sources consulted: [Expo monorepos](https://docs.expo.dev/guides/monorepos/), [E
 
 ## Tests and releases
 
-Vitest covers contract behavior, built-in contrast, custom theme isolation, scoped/nested web providers, SSR, preference subscriptions, and native adapter mappings. Native adapter tests mock the minimal React Native surface; they do not claim native view rendering. Next and Metro production builds verify actual app bundling. Playwright covers browser theme controls, keyboard skip navigation, runtime errors, and mobile overflow.
+Vitest covers contract behavior, built-in contrast, custom theme isolation, scoped/nested web providers, SSR, preference subscriptions, native adapter mappings, and Button semantics, props, state, loading, and motion configuration. Native adapter tests mock the minimal React Native surface; they do not claim native view rendering. Next and Metro production builds verify actual app bundling. Playwright covers browser theme controls, keyboard skip navigation, runtime errors, mobile overflow, and real Button activation, cancellation, loading geometry, focus, forms, and reduced motion.
 
 CI installs from a frozen lockfile, checks formatting, runs `pnpm check`, validates Expo's dependency matrix, and runs browser checks. Xcode/Gradle binary builds, native accessibility checks, Dynamic Type, device gestures, and a bare-host smoke test remain distinct checks.
 
@@ -80,3 +80,15 @@ The Surface primitive owns material, depth, lighting, borders, and visual state.
 Polished and porcelain refinement changes shared recipe data only: lower lips/highlight/edge contrast and shadow strength/falloff, including a smaller Android elevation. Both existing adapters consume the values; public APIs, tokens, state semantics, package exports, native capability descriptors, and dependency direction are preserved. Web retains continuous CSS gradients/inset shadows; native retains 24 clipped fill strips, solid rim layers, iOS shadows, and OS-controlled Android elevation. There is no new renderer requirement.
 
 Calibration typography and the warm arrow remain application composition. The docs lab adds a fixed historical capture and responsive size fixtures; it does not embed a legacy resolver in the library. See [Phase 2.1 calibration](phase-2.1/CALIBRATION.md) for exact values, screenshots, limitations, and the approval-gated Phase 3 plan. Native device visual acceptance and bare-host validation remain outstanding.
+
+## Phase 3: Button composition
+
+Both platform packages export `Button`, `ButtonProps`, `ButtonSize`, and `ButtonVariant`. Shared `buttonSizes` and `ButtonSize` live in the token package. The two existing materials and public Surface renderers remain unchanged: Button owns content, layout, semantics, state, focus, and motion, while Surface owns material, lighting, border, and depth.
+
+On web a semantic HTML button sits inside the public non-interactive Surface div; its ref and ordinary button attributes are forwarded. Native uses Pressable around the public Surface, forwards a ViewInstance ref and platform props, and accepts a style callback while reserving children for content. Loading blocks activation and preserves content geometry; web adds a localizable polite status, while native exposes busy state and leaves application announcements to the app.
+
+CSS handles web focus and motion. Native Animated translates the Surface once, with the immediate Surface transform suppressed to avoid double movement. AccessibilityInfo observes native reduced motion; both adapters use a static loading indicator when motion is reduced. This adds no native module, Expo dependency, Reanimated, or graphics engine.
+
+The Next.js `/button-lab` extends the existing reading/inspection shell, and `apps/showcase` adds a corresponding native lab. The warm arrow medallion is optional app composition through the trailing slot, not a new variant or required Button feature. Built-in focus and full radius follow the nearest theme; fixed Surface palettes retain their approved material identity.
+
+Packed consumers and browser checks exercise the shipped API and stylesheet. Native mocked-host tests and Expo bundle exports do not establish device rendering or interaction quality. Native visual/runtime, accessibility, large-text, and bare-host acceptance remain outstanding. See [Button API, examples, and limits](BUTTONS.md) and [verification evidence](PROGRESS.md).
