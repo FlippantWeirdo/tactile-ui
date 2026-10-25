@@ -1,0 +1,21 @@
+import { test, expect } from '@playwright/test';
+test('docs theme controls, keyboard navigation, and mobile layout', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('A shared language.');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#main')).toBeFocused();
+  await page.getByRole('button', { name: 'Dark theme' }).click();
+  await expect(page.locator('[data-tactile-theme]')).toHaveAttribute('data-tactile-theme', 'dark');
+  await page.getByRole('radio', { name: 'Forest' }).check();
+  await expect(page.locator('#themes pre')).toContainText('#a4d7b1');
+  await expect(page.locator('.docs-shell')).toHaveCSS('--tactile-color-accent', '#a4d7b1');
+  await page.getByRole('button', { name: 'Dark theme' }).click();
+  await expect(page.locator('#themes pre')).toContainText('#286143');
+  const fits = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+  expect(fits).toBe(true);
+  expect(errors).toEqual([]);
+});
