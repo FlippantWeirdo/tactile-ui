@@ -36,20 +36,20 @@ export interface SurfaceRecipe {
 /** Reference materials retain their identity in either theme; they are not semantic canvas roles. */
 export const surfacePresets = {
   polished: {
-    fill: { top: '#3e3e3c', middle: '#2c2c2a', bottom: '#222220' },
+    fill: { top: '#3c3c3b', middle: '#2d2d2c', bottom: '#242423' },
     foreground: '#ffffff',
-    edge: '#171715',
-    highlight: '#858581',
-    shade: '#111110',
-    lip: 6,
+    edge: '#1a1a18',
+    highlight: '#747471',
+    shade: '#181817',
+    lip: 5,
   },
   porcelain: {
-    fill: { top: '#fcfcfc', middle: '#fafafa', bottom: '#f8f8f8' },
+    fill: { top: '#fdfdfd', middle: '#fbfbfb', bottom: '#f9f9f9' },
     foreground: '#18191b',
-    edge: '#eeeeec',
+    edge: '#f1f1ef',
     highlight: '#ffffff',
-    shade: '#ececea',
-    lip: 7,
+    shade: '#efefed',
+    lip: 5.5,
   },
 } as const;
 
@@ -84,17 +84,17 @@ export function resolveSurfaceRecipe(theme: Theme, options: SurfaceOptions = {})
     shadows: [
       {
         offsetY: round(2 * factor),
-        blur: round(4 * factor),
-        opacity: factor === 0 ? 0 : preset === 'polished' ? 0.18 : 0.06,
+        blur: round(5 * factor),
+        opacity: factor === 0 ? 0 : preset === 'polished' ? 0.15 : 0.045,
       },
       {
         offsetY: round(5 * factor),
-        blur: round(10 * factor),
-        opacity: factor === 0 ? 0 : preset === 'polished' ? 0.14 : 0.07,
+        blur: round(11 * factor),
+        opacity: factor === 0 ? 0 : preset === 'polished' ? 0.11 : 0.055,
       },
     ],
     shadowColor: '#000000',
-    elevation: round(4 * factor),
+    elevation: round(3.5 * factor),
     translateY: state === 'pressed' ? round(2 * depth) : state === 'hovered' ? round(-depth) : 0,
     opacity: state === 'disabled' ? 0.5 : 1,
   };

@@ -161,7 +161,7 @@ export function SurfaceLab() {
           <div className="section-heading">
             <div>
               <h2 id="comparison-title">Against the original.</h2>
-              <p>The supplied reference and a CSS reconstruction at the same proportions.</p>
+              <p>Original, previous, and refined surfaces on the same white canvas.</p>
             </div>
             <label htmlFor="surface-comparison">
               Comparison
@@ -176,9 +176,9 @@ export function SurfaceLab() {
             </label>
           </div>
           <p className="aside-text">
-            This comparison uses the current state, depth, and radius on both materials. The
-            material selector changes only the live specimen. The warm arrow medallion is a lab-only
-            decoration.
+            The refined study uses the current state, depth, and radius on both materials. The
+            previous capture stays at rest, depth 1, and pill radius. The material selector changes
+            only the live specimen. The warm arrow medallion is a lab-only decoration.
           </p>
           {comparison === 'overlay' && (
             <label className="overlay-control" htmlFor="reference-opacity">
@@ -210,13 +210,57 @@ export function SurfaceLab() {
               />
             </div>
             {comparison === 'stack' && (
-              <div className="comparison-caption reconstruction-caption">
-                CSS reconstruction · {state}
-              </div>
+              <>
+                <div className="comparison-caption">Previous implementation · Phase 2 baseline</div>
+                <div className="comparison-frame previous-frame">
+                  <img
+                    src="/references/surface-phase-2-baseline.png"
+                    width="916"
+                    height="166"
+                    alt="Previous Phase 2 web surfaces at rest, depth 1, pill radius"
+                  />
+                </div>
+                <div className="comparison-caption reconstruction-caption">
+                  Refined implementation · {state}
+                </div>
+              </>
             )}
             <div className="comparison-frame reconstruction-frame">
               <ReferenceStudy options={options} />
             </div>
+          </div>
+        </section>
+        <section aria-labelledby="geometry-title">
+          <h2 id="geometry-title">Across dimensions.</h2>
+          <p>
+            Small, medium, large, and custom-width containers. Current state, depth, and radius
+            apply.
+          </p>
+          <div className="geometry-studies">
+            {(['polished', 'porcelain'] as const).map((material) => (
+              <div key={material} className="geometry-material" aria-label={`${material} geometry`}>
+                {[
+                  { name: 'Small', width: 160, height: 40 },
+                  { name: 'Medium', width: 240, height: 56 },
+                  { name: 'Large', width: 320, height: 80 },
+                  { name: 'Custom width', width: 400, height: 56 },
+                ].map(({ name, width, height }) => (
+                  <div key={name} className="geometry-sample">
+                    <span>
+                      {name} · {width} × {height}
+                    </span>
+                    <Surface
+                      {...options}
+                      preset={material}
+                      className="geometry-surface"
+                      style={{ width, height }}
+                    >
+                      {name}
+                    </Surface>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </section>
         <section aria-labelledby="recipe-title">

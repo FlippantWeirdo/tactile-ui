@@ -76,3 +76,29 @@ Browser tests now use a fresh production server on port 3100 (`PLAYWRIGHT_PORT` 
 The static web design detector reported one font advisory for Arial in the reference reconstruction. That lab-only fallback is deliberate because the source font is unknown; the surrounding docs retain Newsreader and system text. The detector has no native visual verdict. See [Surface API and calibration](SURFACES.md) for detailed fidelity limits: glyph weight/width, medallion color field, bevel/antialiasing/shadow falloff, and native 24-band fills/solid rims/iOS versus Android shadows. No numeric pixel-match score or pixel-identical/native parity claim is made. Native accessibility, large font scaling, real device rendering, binary builds and a bare-host integration remain unverified.
 
 The independent web finish review identified two material fixes: fit controls plus specimen in the mobile first viewport, and expose the radius endpoint as “Pill” to assistive technology. Both were scored resolved in the reviewer’s final `ship` verdict pass. This is approval of those two web fixes, not a native visual verdict. The final 390×844 captures place the live specimen at y=652.83 with height=66.58 (bottom=719.41); tests assert the first viewport from document top, spoken radius values, and atomic reference/reconstruction frame alignment. The documentation review found the APIs and evidence consistent with the implementation, with no blocking gap. Historical Phase 1 wording in PRODUCT.md was reported as pre-existing context drift and preserved.
+
+## Phase 2.1 · Surface visual refinement
+
+Implemented on `feat/surface-engine` on 25 October 2026, starting from clean `7bc12d2`. Both existing platform adapters consume restrained polished/porcelain recipes: narrower/lighter lower lips, softer shadow opacity with wider falloff, and lower Android elevation. The polished top highlight is softer; porcelain preserves its white upper highlight with subtler edges. Fixture typography is lighter and vertically centered. Public APIs, token/theme customization, package exports, state/depth behavior, accessibility boundaries, and dependencies remain unchanged. No production Button, renderer, package publication, push, or merge was performed.
+
+Captured pre-edit recipes and screenshots before changes; visually inspected the original, baseline, and refined 916 × 166 frames plus desktop/mobile light/dark, tablet dark, four-size geometry, pressed/radius-16 samples and overlay. The lab now exposes those three comparison generations and standalone responsive size fixtures; its existing controls remain covered. See [the full calibration record and Phase 3 recommendation](phase-2.1/CALIBRATION.md).
+
+| Check                          | Phase 2.1 result                                                                              |
+| ------------------------------ | --------------------------------------------------------------------------------------------- |
+| Full `pnpm check`              | Exit 0: lint, types, tests, app/library builds, packed consumers                              |
+| ESLint / TypeScript            | Zero lint warnings; all six apps/packages plus tooling/tests passed                           |
+| Unit tests                     | 35/35 in 7 files: tokens 2, theme 16, DOM 9, native 8                                         |
+| Libraries / Next.js            | Four ESM/CJS/type builds; docs routes `/`, `/_not-found`, `/surface-lab` prerendered          |
+| Expo export                    | iOS and Android Hermes bundles and canonical reference asset exported                         |
+| Packed consumers               | All four archives and ESM/CJS theme + DOM SSR passed                                          |
+| Browser                        | 4/4 desktop/mobile Chrome tests passed in 6.0s                                                |
+| Expo dependencies / Changesets | Both checks exit 0; existing pending release plan only                                        |
+| Visual inspection              | Web evidence reviewed at 1440, 768, and 390px widths; no page overflow/errors                 |
+| Design detector                | One existing Arial reference-fixture advisory; retained intentionally                         |
+| Native runtime                 | No booted iOS simulator or Android device; no native binary/runtime/visual acceptance claimed |
+
+Validation used Node 24.21.0 and pnpm 10.34.8. The default pnpm 11.25.0 failed the engine guard before validation; a temporary local shim routed nested commands to the cached pinned version without repository toolchain changes. Builds emitted harmless NO_COLOR/FORCE_COLOR environment warnings.
+
+Final `pnpm format:check` and `git diff --check` both passed (exit 0).
+
+Implementation and web review are ready for user approval. Phase 3 has not begun and must wait for refined-surface approval. Native views still approximate continuous gradients/inset shadows; Android OS elevation differs from iOS/web. Native phone/tablet screenshots, font scaling, screen readers, binary builds, and an external bare-host test remain outstanding. No further engine architecture is required to start Button composition after approval.

@@ -87,3 +87,11 @@ Unit tests verify deterministic recipes, bounds, fresh inputs/outputs, theme iso
 ## Deferred
 
 Production Button (including semantics, keyboard/gesture behavior, focus, loading and disabled interaction), component catalog, gestures, haptics, animation adapters, advanced rendering, package publication and scope/license decisions remain deferred.
+
+## Phase 2.1 refinement
+
+The shared material recipes now use a 5px polished lip and 5.5px porcelain lip at rest, lower shadow opacity, slightly wider blur, and elevation 3.5. The polished highlight/edge and porcelain lower-edge contrast are softened without changing the Surface contract or geometry. See [recorded before/after values and visual evidence](phase-2.1/CALIBRATION.md).
+
+The web lab's stacked comparison includes the canonical original, fixed previous implementation at rest/depth 1/pill, and current refined study. The overlay remains original over refined. Standalone four-size studies in both labs expose geometry independently of labels/icons; requested widths shrink to available space. Native minimum-height samples allow text scaling. Historical screenshots are evaluation assets only, never package dependencies.
+
+The Surface primitive owns material, depth, lighting, borders, and visual state. Components own content, layout, interaction semantics, and composition. Decorative accents are optional component-level compositions, not mandatory surface features.

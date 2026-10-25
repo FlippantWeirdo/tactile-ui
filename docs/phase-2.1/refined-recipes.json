@@ -1,0 +1,66 @@
+{
+  "polished": {
+    "preset": "polished",
+    "state": "rest",
+    "radius": 9999,
+    "depth": 1,
+    "fill": {
+      "top": "#3c3c3b",
+      "middle": "#2d2d2c",
+      "bottom": "#242423"
+    },
+    "foreground": "#ffffff",
+    "edge": "#1a1a18",
+    "highlight": "#747471",
+    "shade": "#181817",
+    "lip": 5,
+    "shadows": [
+      {
+        "offsetY": 2,
+        "blur": 5,
+        "opacity": 0.15
+      },
+      {
+        "offsetY": 5,
+        "blur": 11,
+        "opacity": 0.11
+      }
+    ],
+    "shadowColor": "#000000",
+    "elevation": 3.5,
+    "translateY": 0,
+    "opacity": 1
+  },
+  "porcelain": {
+    "preset": "porcelain",
+    "state": "rest",
+    "radius": 9999,
+    "depth": 1,
+    "fill": {
+      "top": "#fdfdfd",
+      "middle": "#fbfbfb",
+      "bottom": "#f9f9f9"
+    },
+    "foreground": "#18191b",
+    "edge": "#f1f1ef",
+    "highlight": "#ffffff",
+    "shade": "#efefed",
+    "lip": 5.5,
+    "shadows": [
+      {
+        "offsetY": 2,
+        "blur": 5,
+        "opacity": 0.045
+      },
+      {
+        "offsetY": 5,
+        "blur": 11,
+        "opacity": 0.055
+      }
+    ],
+    "shadowColor": "#000000",
+    "elevation": 3.5,
+    "translateY": 0,
+    "opacity": 1
+  }
+}

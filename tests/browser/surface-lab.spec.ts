@@ -26,10 +26,41 @@ test('Surface Lab controls, comparison, keyboard access, and responsive layout',
     'aria-valuetext',
     'Pill',
   );
+  const previous = page.locator('.previous-frame img');
+  expect(
+    await previous.evaluate(
+      (image: HTMLImageElement) => image.complete && image.naturalWidth === 916,
+    ),
+  ).toBe(true);
+  await expect(page.locator('.geometry-surface')).toHaveCount(8);
+  const geometry = await page.locator('.geometry-surface').evaluateAll((nodes) =>
+    nodes.map((node) => {
+      const style = getComputedStyle(node);
+      const box = node.getBoundingClientRect();
+      return {
+        width: box.width,
+        height: box.height,
+        requestedWidth: parseFloat((node as HTMLElement).style.width),
+        requestedHeight: parseFloat((node as HTMLElement).style.height),
+        radius: style.borderRadius,
+        available: node.parentElement!.getBoundingClientRect().width,
+      };
+    }),
+  );
+  for (const sample of geometry) {
+    expect(sample.width).toBeCloseTo(Math.min(sample.requestedWidth, sample.available), 0);
+    expect(sample.height).toBeCloseTo(sample.requestedHeight, 0);
+    expect(sample.radius).toBe('9999px');
+  }
   await page.getByRole('combobox', { name: 'Material', exact: true }).selectOption('porcelain');
   await expect(specimen).toHaveAttribute('data-tactile-surface', 'porcelain');
   await page.getByRole('combobox', { name: 'Visual state', exact: true }).selectOption('pressed');
   await expect(specimen).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 2)');
+  await expect(page.locator('.geometry-surface').first()).toHaveCSS(
+    'transform',
+    'matrix(1, 0, 0, 1, 0, 2)',
+  );
+  await expect(previous).toHaveAttribute('src', '/references/surface-phase-2-baseline.png');
   await page.getByRole('combobox', { name: 'Visual state', exact: true }).selectOption('disabled');
   await expect(specimen).toHaveCSS('opacity', '0.5');
   await expect(specimen).not.toHaveAttribute('role', 'button');

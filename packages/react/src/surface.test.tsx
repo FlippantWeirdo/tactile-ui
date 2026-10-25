@@ -56,7 +56,7 @@ describe('DOM Surface', () => {
     expect(screen.getByTestId('outer').style.borderRadius).toBe('23px');
     expect(screen.getByTestId('inner').style.borderRadius).toBe('12px');
     const recipe = resolveSurfaceRecipe(theme);
-    expect(surfaceToCSS(recipe).boxShadow).toContain('0 5px 10px');
+    expect(surfaceToCSS(recipe).boxShadow).toContain('0 5px 11px');
     expect(surfaceToCSS(recipe).boxShadow).toContain('inset');
   });
 });

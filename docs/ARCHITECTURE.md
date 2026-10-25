@@ -72,3 +72,11 @@ Changesets uses independent versions with dependency patch updates. A changeset 
 `@tactile-ui/theme` now owns the framework-free `resolveSurfaceRecipe`, `SurfaceOptions`, `SurfaceRecipe`, `surfacePresets` and deterministic native fill-band helper. This extends the existing dependency graph without introducing a new package or dependency. Rendering decisions remain separate: DOM `Surface`/`surfaceToCSS` use CSS, and native `Surface`/`surfaceToNativeStyles` use View layers, iOS shadows and Android elevation. Both require the nearest theme provider. No native capabilities were upgraded: solid edge layers approximate inset shading and do not constitute inset-shadow support.
 
 Materials retain the supplied reference colors across theme modes; named radii resolve from the theme. Surface is a visual container with explicit state and no built-in interaction, semantic control role or animation. Phase 1 adapters/providers remain intact. The Next.js lab lives at `/surface-lab`, and the Expo lab joins the foundation screen. See [surface contract, calibration and limitations](SURFACES.md).
+
+## Phase 2.1: material refinement boundary
+
+The Surface primitive owns material, depth, lighting, borders, and visual state. Components own content, layout, interaction semantics, and composition. Decorative accents are optional component-level compositions, not mandatory surface features.
+
+Polished and porcelain refinement changes shared recipe data only: lower lips/highlight/edge contrast and shadow strength/falloff, including a smaller Android elevation. Both existing adapters consume the values; public APIs, tokens, state semantics, package exports, native capability descriptors, and dependency direction are preserved. Web retains continuous CSS gradients/inset shadows; native retains 24 clipped fill strips, solid rim layers, iOS shadows, and OS-controlled Android elevation. There is no new renderer requirement.
+
+Calibration typography and the warm arrow remain application composition. The docs lab adds a fixed historical capture and responsive size fixtures; it does not embed a legacy resolver in the library. See [Phase 2.1 calibration](phase-2.1/CALIBRATION.md) for exact values, screenshots, limitations, and the approval-gated Phase 3 plan. Native device visual acceptance and bare-host validation remain outstanding.

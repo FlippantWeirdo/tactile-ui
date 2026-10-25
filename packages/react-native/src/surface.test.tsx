@@ -52,6 +52,23 @@ describe('native Surface adapter (mocked Views, not device rendering)', () => {
     expect(android.outer).not.toHaveProperty('shadowOpacity');
     expect(android.ambient).not.toHaveProperty('elevation');
   });
+  it.each(['polished', 'porcelain'] as const)(
+    'preserves unclipped shadows and clipped face geometry for refined %s',
+    (preset) => {
+      for (const radius of [0, 16, 9999]) {
+        const recipe = resolveSurfaceRecipe(createTheme(), { preset, radius });
+        const layers = surfaceToNativeStyles(recipe, 'ios');
+        expect(layers.outer.borderRadius).toBe(radius);
+        expect(layers.ambient.borderRadius).toBe(radius);
+        expect(layers.face.borderRadius).toBe(radius);
+        expect(layers.outer).not.toHaveProperty('overflow');
+        expect(layers.ambient).not.toHaveProperty('overflow');
+        expect(layers.face.overflow).toBe('hidden');
+        expect(layers.outer.shadowOpacity).toBe(recipe.shadows[0]!.opacity);
+        expect(layers.ambient.shadowRadius).toBe(recipe.shadows[1]!.blur / 2);
+      }
+    },
+  );
   it('keeps children outside hidden decoration layers and forwards ref and layout styles', () => {
     const ref = createRef<ComponentRef<typeof Surface>>();
     const { container } = render(

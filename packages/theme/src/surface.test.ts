@@ -48,6 +48,34 @@ describe('surface recipe contract', () => {
     expect(recipe.radius).toBe(9999);
     expect(JSON.stringify(recipe)).not.toMatch(/null/);
   });
+  it.each(['polished', 'porcelain'] as const)(
+    'keeps restrained depth and state scaling for %s',
+    (preset) => {
+      const theme = createTheme();
+      const rest = resolveSurfaceRecipe(theme, { preset });
+      // Phase 2 values are the upper visual-weight budget, not a second resolver.
+      const previous =
+        preset === 'polished'
+          ? { lip: 6, contact: 0.18, ambient: 0.14 }
+          : { lip: 7, contact: 0.06, ambient: 0.07 };
+      expect(rest.lip).toBeGreaterThan(0);
+      expect(rest.lip).toBeLessThan(previous.lip);
+      expect(rest.shadows[0]!.opacity).toBeLessThan(previous.contact);
+      expect(rest.shadows[1]!.opacity).toBeLessThan(previous.ambient);
+      expect(rest.shadows[0]!.blur).toBeGreaterThan(4);
+      expect(rest.shadows[1]!.blur).toBeGreaterThan(10);
+      for (const [state, multiplier] of [
+        ['pressed', 0.25],
+        ['hovered', 1.2],
+        ['disabled', 0.4],
+      ] as const) {
+        const recipe = resolveSurfaceRecipe(theme, { preset, state });
+        expect(recipe.lip).toBeCloseTo(rest.lip * multiplier, 3);
+        expect(recipe.elevation).toBeCloseTo(rest.elevation * multiplier, 3);
+        expect(recipe.fill).toEqual(rest.fill);
+      }
+    },
+  );
   it('bounds dimensions and removes lip, shadow, lift and elevation at zero depth', () => {
     const theme = createTheme();
     expect(resolveSurfaceRecipe(theme, { depth: 99, radius: 20000 }).depth).toBe(2);

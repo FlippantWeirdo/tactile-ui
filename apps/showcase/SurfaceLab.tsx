@@ -103,6 +103,44 @@ export function SurfaceLab() {
           </Surface>
         ))}
       </View>
+      <Text accessibilityRole="header" style={[text, styles.heading]}>
+        Across dimensions
+      </Text>
+      <Text style={text}>Small, medium, large, and custom-width containers on a white canvas.</Text>
+      <View style={styles.reconstruction}>
+        {(['polished', 'porcelain'] as const).map((material) => (
+          <View key={material} style={{ width: '100%', alignItems: 'center', gap: 24 }}>
+            {[
+              { name: 'Small', width: 160, height: 40 },
+              { name: 'Medium', width: 240, height: 56 },
+              { name: 'Large', width: 320, height: 80 },
+              { name: 'Custom width', width: 400, height: 56 },
+            ].map(({ name, width, height }) => (
+              <Surface
+                key={name}
+                preset={material}
+                state={state}
+                depth={depth}
+                radius={pill ? 'full' : 'lg'}
+                style={{ width, maxWidth: '100%' }}
+              >
+                <View style={{ minHeight: height, justifyContent: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '400',
+                      textAlign: 'center',
+                      color: resolveSurfaceRecipe(theme, { preset: material }).foreground,
+                    }}
+                  >
+                    {name}
+                  </Text>
+                </View>
+              </Surface>
+            ))}
+          </View>
+        ))}
+      </View>
       <NativeButton
         title="Reset calibration"
         onPress={() => {
@@ -128,7 +166,7 @@ const styles = StyleSheet.create({
   stage: { paddingVertical: 48, paddingHorizontal: 12, alignItems: 'center', borderRadius: 12 },
   specimen: {
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: '500',
     paddingHorizontal: 24,
     paddingTop: 17,
     paddingBottom: 21,
