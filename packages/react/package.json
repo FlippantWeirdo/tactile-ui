@@ -1,0 +1,44 @@
+{
+  "name": "@tactile-ui/react",
+  "version": "0.1.0",
+  "description": "React DOM theme foundation for Tactile UI.",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --root ../.. --config vitest.config.ts packages/react/src",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@tactile-ui/theme": "workspace:^",
+    "@tactile-ui/tokens": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}

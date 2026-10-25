@@ -1,0 +1,52 @@
+{
+  "name": "@tactile-ui/react-native",
+  "version": "0.1.0",
+  "description": "Expo-independent React Native theme foundation for Tactile UI.",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "react-native": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --root ../.. --config vitest.config.ts packages/react-native/src",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@tactile-ui/theme": "workspace:^",
+    "@tactile-ui/tokens": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": "^19.3.0",
+    "react-native": "^0.88.0"
+  },
+  "react-native": "./dist/index.js",
+  "devDependencies": {
+    "react-native": "0.88.0"
+  }
+}
