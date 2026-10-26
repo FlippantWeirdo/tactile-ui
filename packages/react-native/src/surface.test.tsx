@@ -21,6 +21,7 @@ vi.mock('react-native', async () => {
         style?: unknown;
         testID?: string;
         accessibilityElementsHidden?: boolean;
+        onLayout?: unknown;
       }
     >(function MockView(props, ref) {
       return createElement(
@@ -30,6 +31,7 @@ vi.mock('react-native', async () => {
           'data-testid': props.testID,
           'data-style': JSON.stringify(props.style),
           'data-decorative': props.accessibilityElementsHidden ? 'true' : undefined,
+          'data-on-layout': props.onLayout ? 'forwarded' : undefined,
         },
         props.children,
       );
@@ -69,6 +71,29 @@ describe('native Surface adapter (mocked Views, not device rendering)', () => {
       }
     },
   );
+  it('keeps ambient shadows out of the sizing chain and forwards native layout callbacks', () => {
+    const onLayout = vi.fn();
+    render(
+      <TactileProvider preference="light">
+        <Surface testID="sized" onLayout={onLayout} style={{ height: 96 }}>
+          Content
+        </Surface>
+      </TactileProvider>,
+    );
+    const host = screen.getByTestId('sized');
+    const ambient = host.children[0]!;
+    const face = host.children[1]!;
+    expect(host.getAttribute('data-on-layout')).toBe('forwarded');
+    expect(ambient.getAttribute('data-decorative')).toBe('true');
+    expect(ambient.children.length).toBe(0);
+    expect(ambient.getAttribute('data-style')).toContain('"position":"absolute"');
+    expect(ambient.getAttribute('data-style')).not.toContain('flexGrow');
+    expect(face.getAttribute('data-style')).toContain('"position":"absolute"');
+    expect(face.getAttribute('data-style')).not.toContain('flexGrow');
+    expect(face.getAttribute('data-decorative')).toBe('true');
+    expect(face.textContent).toBe('');
+    expect(host.children[2]!.textContent).toBe('Content');
+  });
   it('keeps children outside hidden decoration layers and forwards ref and layout styles', () => {
     const ref = createRef<ComponentRef<typeof Surface>>();
     const { container } = render(
@@ -80,7 +105,8 @@ describe('native Surface adapter (mocked Views, not device rendering)', () => {
     );
     expect(ref.current).toBe(screen.getByTestId('surface'));
     expect(screen.getByTestId('surface').getAttribute('data-style')).toContain('"margin":12');
-    const decoration = container.querySelector('[data-decorative="true"]');
+    const decorationLayers = Array.from(container.querySelectorAll('[data-decorative="true"]'));
+    const decoration = decorationLayers.find((layer) => layer.children.length > 0);
     expect(decoration?.children.length).toBe(25);
     expect(decoration?.textContent).toBe('');
     expect(screen.getByText('Native content').closest('[data-decorative]')).toBe(null);

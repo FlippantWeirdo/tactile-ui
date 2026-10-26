@@ -140,3 +140,17 @@ The independent Impeccable finish review returned **ship for the reviewed web fi
 [Web evidence and reference composition](phase-3/EVIDENCE.md) · [Button API](BUTTONS.md)
 
 Native material limitations remain 24 fill bands, solid inset approximations, iOS shadow mapping and OS-controlled Android elevation. The optional native accent uses eight solid bands. No native visual parity, VoiceOver/TalkBack, binary build, hardware performance, or bare React Native host result is claimed. Keep those checks separate from the successful Expo exports. Further components remain out of scope.
+
+## Native Surface sizing repair · 26 October 2026
+
+The user-reported iPhone failure was real: native Surface's growing ambient/face wrappers inflated intrinsic content in a vertical ScrollView. The previous mocked View tests and successful Expo exports did not exercise Yoga layout. A native reproduction measured intrinsic surfaces at 2,212dp high. Keeping even one growing face wrapper reproduced the failure.
+
+Ambient shadow and clipped material face are now absolute siblings; only the content wrapper participates in measurement, with the original 1.5dp border inset. This preserves outer View props/ref/onLayout, explicit height, minHeight, flex allocation, shadows and material recipes. Content owns overflow/clipping; the material face alone clips its bands and rim. Web and shared recipes are unchanged.
+
+Added the opt-in `NativeLayoutChecks` showcase entry and `test:layout:ios` / `test:layout:android` commands. These render the actual public package on a native host. They cover both intrinsic materials, finite radius, explicit/minimum/flex heights, custom width, wrapped text, both Button materials in all three sizes, full width and loading stability. The optional local report URL is confined to the opt-in harness; no instrumentation is present in the library.
+
+Verified on an iPhone 18 Pro simulator running iOS 27 in Expo Go: **17/17 real layout checks passed**. Intrinsic fixtures measure 123 × 35dp, constrained fixtures 240 × 96dp, Button sizes 51/59/67dp including the border inset, full width 300 × 59dp, and loading preserves 199.67 × 59dp. Captures show normal material geometry and unclipped label content. Returning to the standard showcase loaded the normal foundation screen; further scrolling through Device Hub was blocked by its automation window error, so no complete post-fix interaction walk-through is claimed.
+
+`pnpm check` passed: zero lint warnings, all TypeScript checks, **62 tests in 9 files** (tokens 3, theme 16, DOM 23, native 20), all library/Next/Expo builds and packed consumers. **8/8 browser tests passed** in 10.6s. Node 24.21.0 and pnpm 10.34.8; no dependency or lockfile changes. During package rebuild, the running Metro instance briefly reported a missing dist file; a reload after the build produced the clean passing capture.
+
+This repairs the observed iOS layout failure. Android runtime, tablet/orientation coverage, screen-reader announcements, large text, native binary/bare-host behavior and hardware animation performance are still unverified. The 24-band material/inset approximations remain. Historical Phase 3 native limitations above describe the initial run, not this repair.

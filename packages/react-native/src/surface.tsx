@@ -37,13 +37,11 @@ export function surfaceToNativeStyles(
       ...shadow(0),
     } satisfies ViewStyle,
     ambient: {
-      flexGrow: 1,
       borderRadius: recipe.radius,
       backgroundColor: recipe.fill.middle,
       ...shadow(1),
     } satisfies ViewStyle,
     face: {
-      flexGrow: 1,
       borderRadius: recipe.radius,
       backgroundColor: recipe.fill.middle,
       borderWidth: 1.5,
@@ -54,7 +52,7 @@ export function surfaceToNativeStyles(
 }
 export interface SurfaceProps extends ViewProps, SurfaceOptions {}
 
-/** Native View layers only. Children own their text color; Surface creates no interaction. */
+/** Native View layers only. Children own text color and overflow; Surface creates no interaction. */
 export const Surface: ForwardRefExoticComponent<
   PropsWithoutRef<SurfaceProps> & RefAttributes<ViewInstance>
 > = forwardRef<ViewInstance, SurfaceProps>(function Surface(
@@ -71,42 +69,47 @@ export const Surface: ForwardRefExoticComponent<
   const layers = surfaceToNativeStyles(recipe, Platform.OS === 'android' ? 'android' : 'ios');
   return (
     <View {...props} ref={ref} style={[layers.outer, style]}>
-      <View style={layers.ambient}>
-        <View style={layers.face}>
+      {/* Shadow decoration must not participate in content measurement. */}
+      <View
+        pointerEvents="none"
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={[StyleSheet.absoluteFill, layers.ambient]}
+      />
+      <View
+        pointerEvents="none"
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={[StyleSheet.absoluteFill, layers.face]}
+      >
+        {surfaceFillBands(recipe).map((color, index) => (
           <View
-            pointerEvents="none"
-            accessible={false}
-            accessibilityElementsHidden
-            importantForAccessibility="no-hide-descendants"
-            style={StyleSheet.absoluteFill}
-          >
-            {surfaceFillBands(recipe).map((color, index) => (
-              <View
-                key={index}
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  top: `${(index / 24) * 100}%`,
-                  height: `${100 / 24 + 0.15}%`,
-                  backgroundColor: color,
-                }}
-              />
-            ))}
-            <View
-              style={{
-                ...StyleSheet.absoluteFill,
-                borderRadius: recipe.radius,
-                borderTopWidth: 1.5,
-                borderTopColor: recipe.highlight,
-                borderBottomWidth: recipe.lip,
-                borderBottomColor: recipe.shade,
-              }}
-            />
-          </View>
-          {children}
-        </View>
+            key={index}
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: `${(index / 24) * 100}%`,
+              height: `${100 / 24 + 0.15}%`,
+              backgroundColor: color,
+            }}
+          />
+        ))}
+        <View
+          style={{
+            ...StyleSheet.absoluteFill,
+            borderRadius: recipe.radius,
+            borderTopWidth: 1.5,
+            borderTopColor: recipe.highlight,
+            borderBottomWidth: recipe.lip,
+            borderBottomColor: recipe.shade,
+          }}
+        />
       </View>
+      {/* Only content participates in layout; absolute material layers follow any final size. */}
+      <View style={{ padding: 1.5 }}>{children}</View>
     </View>
   );
 });

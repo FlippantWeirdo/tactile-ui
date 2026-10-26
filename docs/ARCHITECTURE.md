@@ -83,7 +83,7 @@ Calibration typography and the warm arrow remain application composition. The do
 
 ## Phase 3: Button composition
 
-Both platform packages export `Button`, `ButtonProps`, `ButtonSize`, and `ButtonVariant`. Shared `buttonSizes` and `ButtonSize` live in the token package. The two existing materials and public Surface renderers remain unchanged: Button owns content, layout, semantics, state, focus, and motion, while Surface owns material, lighting, border, and depth.
+Both platform packages export `Button`, `ButtonProps`, `ButtonSize`, and `ButtonVariant`. Shared `buttonSizes` and `ButtonSize` live in the token package. The two existing materials remain shared: Button owns content, layout, semantics, state, focus, and motion, while Surface owns material, lighting, border, and depth. Native Surface uses absolute shadow/material siblings around ordinary-flow inset content; decoration follows the final frame without inflating Yoga measurement. Content owns overflow/clipping; refs and layout callbacks belong to the outer View.
 
 On web a semantic HTML button sits inside the public non-interactive Surface div; its ref and ordinary button attributes are forwarded. Native uses Pressable around the public Surface, forwards a ViewInstance ref and platform props, and accepts a style callback while reserving children for content. Loading blocks activation and preserves content geometry; web adds a localizable polite status, while native exposes busy state and leaves application announcements to the app.
 

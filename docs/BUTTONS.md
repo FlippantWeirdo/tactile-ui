@@ -1,6 +1,6 @@
 # Button · Phase 3
 
-Button composes the approved Surface materials into platform-native controls. The approved Phase 2.1 surface resolver and both renderers are unchanged. The name and npm scope remain provisional; packages have not been published.
+Button composes the approved Surface materials into platform-native controls. The approved Phase 2.1 surface resolver is unchanged; the native Surface renderer includes the intrinsic-sizing repair recorded in PROGRESS.md. The name and npm scope remain provisional; packages have not been published.
 
 ## Installation and imports
 
@@ -176,6 +176,6 @@ The Expo app is `apps/showcase` (the repository's existing path). Its Button Lab
 
 Browser tests verify keyboard activation, actual click feedback, drag-out cancellation, disabled/busy state, accessible names, unchanged loading bounds, theme-driven focus outline, form submit/reset, long-label overflow, and reduced motion. Native unit tests use mocked hosts to verify prop/semantic mapping, callbacks, ref/style forwarding, animation configuration, motion subscription cleanup, and stale-query handling. These mocks do not establish native rendering, actual touch targets, or screen-reader behavior.
 
-Native binary/device testing remains separate: an iPhone 18 Pro simulator was booted successfully for a host check, but no Expo Go app was installed; the simulator was restored to shutdown afterward. No Android device was connected. The Expo showcase was not run on a native host. Expo exports verify bundling, not on-device appearance, accessibility, large text, or animation quality. Surface's existing 24 fill bands, solid inset approximations, iOS shadows and OS-controlled Android elevation remain the rendering limitations. Bare React Native host compatibility is still a goal pending an external host/device check.
+The initial Phase 3 checks did not run the native showcase. After the reported layout failure, the repaired Expo showcase and 17 real layout checks were run on an iPhone 18 Pro iOS 27 simulator. These cover intrinsic and constrained Surface dimensions, both Button materials in all sizes, full width, wrapped text and stable loading dimensions. After `pnpm build:packages`, run `pnpm --filter @tactile-ui/showcase test:layout:ios` (or `test:layout:android`) to open the opt-in native regression screen; all 17 checks must pass. No Android runtime or native binary build was verified. Screen readers, large text and hardware animation quality remain separate checks. Surface's existing 24 fill bands, solid inset approximations, iOS shadows and OS-controlled Android elevation remain the rendering limitations. Bare React Native host compatibility is still a goal pending an external host/device check.
 
 The Surface primitive owns material, depth, lighting, borders, and visual state. Components own content, layout, interaction semantics, and composition. Decorative accents are optional component-level compositions, not mandatory surface features.

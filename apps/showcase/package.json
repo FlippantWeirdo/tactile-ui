@@ -10,7 +10,9 @@
     "build": "expo export --platform ios --platform android --output-dir dist",
     "typecheck": "tsc --noEmit",
     "doctor": "expo install --check",
-    "clean": "rimraf dist .expo"
+    "clean": "rimraf dist .expo",
+    "test:layout:ios": "EXPO_PUBLIC_NATIVE_LAYOUT_CHECKS=1 expo start --ios",
+    "test:layout:android": "EXPO_PUBLIC_NATIVE_LAYOUT_CHECKS=1 expo start --android"
   },
   "dependencies": {
     "@tactile-ui/react-native": "workspace:*",
